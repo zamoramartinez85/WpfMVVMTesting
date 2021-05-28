@@ -211,8 +211,8 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 
-WpfMVVMTesting.Models/bin
-WpfMVVMTesting.Models/obj
+WpfMVVMTesting.Models/bin/
+WpfMVVMTesting.Models/obj/
 
-WpfMVVMTesting.UI/bin
-WpfMVVMTesting.UI/obj
+WpfMVVMTesting.UI/bin/
+WpfMVVMTesting.UI/obj/
