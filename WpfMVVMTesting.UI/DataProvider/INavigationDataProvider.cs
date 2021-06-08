@@ -7,6 +7,6 @@ namespace WpfMVVMTesting.UI.DataProvider
 {
     public interface INavigationDataProvider
     {
-        IEnumerable<Friend> GetAllFriends();
+        IEnumerable<LookUpItem> GetAllFriends();
     }
 }

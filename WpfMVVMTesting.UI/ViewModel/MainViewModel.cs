@@ -1,16 +1,16 @@
 ﻿using System;
+using WpfMVVMTesting.UI.ViewModelInterface;
 
 namespace WpfMVVMTesting.UI.ViewModel
 {
   public class MainViewModel : ViewModelBase
   {
+        public INavigationViewModel NavigationViewModel { get; private set; }
 
-        public MainViewModel()
+        public MainViewModel(INavigationViewModel navigationViewModel)
         {
-            //this.NavigationViewModel = new NavigationViewModel();
+            this.NavigationViewModel = navigationViewModel;
         }
-
-        public NavigationViewModel NavigationViewModel { get; private set; }
 
         public void Load()
         {

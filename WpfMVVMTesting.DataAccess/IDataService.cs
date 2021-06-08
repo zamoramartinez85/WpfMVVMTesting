@@ -5,7 +5,7 @@ using WpfMVVMTesting.Models;
 
 namespace WpfMVVMTesting.DataAccess
 {
-    public interface IDataService
+    public interface IDataService : IDisposable
     {
         Friend GetFriendById(int friendId);
 
@@ -13,6 +13,6 @@ namespace WpfMVVMTesting.DataAccess
 
         void DeleteFriend(int friendId);
 
-        IEnumerable<Friend> GetAllFriends();
+        IEnumerable<LookUpItem> GetAllFriends();
     }
 }
