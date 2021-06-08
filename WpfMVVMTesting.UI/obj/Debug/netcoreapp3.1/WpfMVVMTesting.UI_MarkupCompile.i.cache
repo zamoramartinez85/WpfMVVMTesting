@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1;
 C:\Users\David\source\repos\WpfMVVMTesting\WpfMVVMTesting.UI\App.xaml
-11407045341
+9-1093376267
 
-5698689490
-192-1533232326
-MainWindow.xaml;
+131046800017
+194-1730630606
+Styles\Brushes.xaml;Styles\Button.xaml;Styles\CheckBox.xaml;Styles\DatePicker.xaml;Styles\Label.xaml;Styles\TextBox.xaml;Views\FriendEditView.xaml;Views\MainWindow.xaml;Views\NavigationView.xaml;
 
-False
+True
 

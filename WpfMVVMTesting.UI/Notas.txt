@@ -1,0 +1,8 @@
+Los tests unitarios deben seguir el patrón F.I.R.S.T.
+
+F: Fast
+I: Independent
+R: Repeatable in any enviroment. Debe de poderse ejecutar independientemente de base de datos, de conexión a internet, etc
+S: Self-validating
+T: Timely. Se deben escribir al tiempo que el código de producción. Mejor si se hacen ANTES.
+
