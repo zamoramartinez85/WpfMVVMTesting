@@ -72,6 +72,6 @@
     </TabControl>
 
     <!--Footer-->
-    <TextBlock Text="Created by Thomas Claudius Huber, 2016" Margin="10" Grid.Row="3" Grid.ColumnSpan="3" Foreground="LightGray" />
+    <TextBlock Text="Curso de  Claudius Huber, 2021" Margin="10" Grid.Row="3" Grid.ColumnSpan="3" Foreground="LightGray" />
   </Grid>
 </Window>

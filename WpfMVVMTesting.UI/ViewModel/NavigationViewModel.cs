@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prism.Events;
+using System;
 using System.Collections.ObjectModel;
 using WpfMVVMTesting.DataAccess;
 using WpfMVVMTesting.Models;
@@ -9,14 +10,17 @@ namespace WpfMVVMTesting.UI.ViewModel
 {
     public class NavigationViewModel : ViewModelBase, INavigationViewModel
     {
-        public ObservableCollection<LookUpItem> Friends { get; private set; }
+        public ObservableCollection<NavigationItemViewModel> Friends { get; private set; }
 
         private readonly INavigationDataProvider _dataProvider;
 
-        public NavigationViewModel(INavigationDataProvider dataProvider)
+        private readonly IEventAggregator _eventAggregator;
+
+        public NavigationViewModel(INavigationDataProvider dataProvider, IEventAggregator eventAggregator)
         {
-            Friends = new ObservableCollection<LookUpItem>();
+            Friends = new ObservableCollection<NavigationItemViewModel>();
             _dataProvider = dataProvider;
+            _eventAggregator = eventAggregator;
         }
 
         public void Load()
@@ -24,7 +28,7 @@ namespace WpfMVVMTesting.UI.ViewModel
             Friends.Clear();
             foreach(LookUpItem friend in _dataProvider.GetAllFriends())
             {
-                Friends.Add(friend);
+                Friends.Add(new NavigationItemViewModel(friend.Id, friend.DisplayMember, _eventAggregator));
             }
         }
     }

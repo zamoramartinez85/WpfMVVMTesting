@@ -1,4 +1,5 @@
 ﻿using Moq;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,8 +16,11 @@ namespace WpfMVVMTesting.UITests.ViewModel
 
         private readonly Mock<INavigationDataProvider> _navigationDataProviderMock;
 
+        private readonly Mock<IEventAggregator> _eventAggregatorMock;
+
         public NavigationViewModelTests()
         {
+            _eventAggregatorMock = new Mock<IEventAggregator>();
             _navigationDataProviderMock = new Mock<INavigationDataProvider>();
             _navigationDataProvider = _navigationDataProviderMock.Object;
             _navigationDataProviderMock.Setup(nddpm => nddpm.GetAllFriends()).Returns(new List<LookUpItem>()
@@ -30,7 +34,7 @@ namespace WpfMVVMTesting.UITests.ViewModel
         public void ShouldLoadFriends()
         {
             //Assert           
-            NavigationViewModel viewModel = new NavigationViewModel(_navigationDataProvider);
+            NavigationViewModel viewModel = new NavigationViewModel(_navigationDataProvider, _eventAggregatorMock.Object);
 
             //Act
             viewModel.Load();
@@ -43,7 +47,7 @@ namespace WpfMVVMTesting.UITests.ViewModel
         public void ShouldLoadFriendsOnlyOnce()
         {
             //Assert
-            NavigationViewModel viewModel = new NavigationViewModel(_navigationDataProvider);
+            NavigationViewModel viewModel = new NavigationViewModel(_navigationDataProvider, _eventAggregatorMock.Object);
 
             //Act
             viewModel.Load();
