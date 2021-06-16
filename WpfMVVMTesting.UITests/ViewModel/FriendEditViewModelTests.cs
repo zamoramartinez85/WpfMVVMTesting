@@ -44,5 +44,57 @@ namespace WpfMVVMTesting.UITests.ViewModel
 
             Assert.True(fired);
         }
-     }
+
+        [Theory]
+        [InlineData(5)]
+        public void ShouldDisableSaveCommandWhenFriendIsLoaded(int friendId)
+        {
+            _viewModel.Load(friendId);
+
+            Assert.False(_viewModel.SaveCommand.CanExecute(null));
+        }
+
+        [Theory]
+        [InlineData(7, "Nuevo nombre")]
+        public void ShouldEnableSaveCommandWhenFriendIsChanged(int friendId, string updatedName)
+        {
+            _dataProviderMock.Setup(dpm => dpm.GetFriendById(friendId)).Returns(new Models.Friend() { Id = friendId, FirstName = "Pepe" });
+            _viewModel.Load(friendId);
+
+            _viewModel.Friend.FirstName = updatedName;
+
+            Assert.True(_viewModel.SaveCommand.CanExecute(null));
+        }
+
+        [Fact]
+        public void ShouldDisableSaveCommandWithoutLoad()
+        {
+            Assert.False(_viewModel.SaveCommand.CanExecute(null));
+        }
+
+        //[Theory]
+        //[InlineData(7, "Nuevo nombre")]
+        //public void ShouldRaiseCanExecuteChangedForSaveCommandWhenFriendIsChanged(int friendId, string updatedName)
+        //{
+        //    _dataProviderMock.Setup(dpm => dpm.GetFriendById(friendId)).Returns(new Models.Friend() { Id = friendId, FirstName = "Pepe" });
+        //    _viewModel.Load(friendId);
+        //    bool fired = false;
+        //    _viewModel.SaveCommand.CanExecuteChanged += (s, e) => fired = true;
+        //    _viewModel.Friend.FirstName = updatedName;
+
+        //    Assert.True(fired);
+        //}
+
+        //[Theory]
+        //[InlineData(7)]
+        //public void ShouldRaiseCanExecuteChangedForSaveCommandWhenAfterLoad(int friendId)
+        //{
+        //    _dataProviderMock.Setup(dpm => dpm.GetFriendById(friendId)).Returns(new Models.Friend() { Id = friendId, FirstName = "Pepe" });
+        //    _viewModel.Load(friendId);
+        //    bool fired = false;
+        //    _viewModel.SaveCommand.CanExecuteChanged += (s, e) => fired = true;
+
+        //    Assert.True(fired);
+        //}
+    }
 }

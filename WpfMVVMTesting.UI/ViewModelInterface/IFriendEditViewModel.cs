@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using WpfMVVMTesting.Models;
+using WpfMVVMTesting.UI.Wrapper;
 
 namespace WpfMVVMTesting.UI.ViewModelInterface
 {
@@ -9,6 +10,6 @@ namespace WpfMVVMTesting.UI.ViewModelInterface
     {
         void Load(int friendId);
 
-        Friend Friend { get; }
+        FriendWrapper Friend { get; }
     }
 }

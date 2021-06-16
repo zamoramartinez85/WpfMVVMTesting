@@ -43,7 +43,7 @@ namespace WpfMVVMTesting.UITests.ViewModel
             friendEditViewModelMock.Setup(fevmm => fevmm.Load(It.IsAny<int>()))
                 .Callback<int>(friendId =>
                 {
-                    friendEditViewModelMock.Setup(fevmm => fevmm.Friend).Returns(new Models.Friend() { Id = friendId });
+                    friendEditViewModelMock.Setup(fevmm => fevmm.Friend).Returns(new UI.Wrapper.FriendWrapper(new Models.Friend() { Id = friendId }));
                 });
             _friendEditViewModelMocks.Add(friendEditViewModelMock);
             return friendEditViewModelMock.Object;
@@ -95,6 +95,17 @@ namespace WpfMVVMTesting.UITests.ViewModel
             Assert.True(fired);
         }
 
-        
+        [Theory]
+        [InlineData(6)]
+        public void ShouldRemoveFriendEditViewModelOnCloseFriendTabCommand(int friendId)
+        {
+            _openFriendEditViewEvent.Publish(friendId);
+
+            IFriendEditViewModel friendEditVm = _mainViewModel.SelectedFriendEditViewModel;
+
+            _mainViewModel.CloseFriendTabCommand.Execute(friendEditVm);
+
+            Assert.Empty(_mainViewModel.FriendEditViewModels);
+        }
     }
 }
