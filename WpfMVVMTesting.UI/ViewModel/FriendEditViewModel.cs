@@ -1,9 +1,11 @@
 ﻿using Prism.Commands;
+using Prism.Events;
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
 using WpfMVVMTesting.Models;
 using WpfMVVMTesting.UI.DataProvider.FriendDataProvider;
+using WpfMVVMTesting.UI.Events;
 using WpfMVVMTesting.UI.ViewModelInterface;
 using WpfMVVMTesting.UI.Wrapper;
 
@@ -14,7 +16,7 @@ namespace WpfMVVMTesting.UI.ViewModel
     {
         #region Propiedades privadas
         private IFriendDataProvider _friendDataProvider;
-
+        private IEventAggregator _eventAggregator;
         private FriendWrapper _friend;
         #endregion
 
@@ -37,9 +39,10 @@ namespace WpfMVVMTesting.UI.ViewModel
         #endregion
 
         #region Constructor
-        public FriendEditViewModel(IFriendDataProvider friendDataProvider)
+        public FriendEditViewModel(IFriendDataProvider friendDataProvider, IEventAggregator eventAggregator)
         {
             _friendDataProvider = friendDataProvider;
+            _eventAggregator = eventAggregator;
             SaveCommand = new DelegateCommand<object>(OnSaveExecute, OnSaveCanExecute);
         }
         #endregion
@@ -66,7 +69,9 @@ namespace WpfMVVMTesting.UI.ViewModel
         #region Métodos privados
         private void OnSaveExecute(object obj)
         {
-            throw new NotImplementedException();
+            _friendDataProvider.SaveFriend(Friend.Model);
+            Friend.AcceptChanges();
+            _eventAggregator.GetEvent<FriendSavedEvent>().Publish(Friend.Model);
         }
 
         private bool OnSaveCanExecute(object arg)

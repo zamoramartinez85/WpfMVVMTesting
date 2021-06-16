@@ -1,9 +1,11 @@
 ﻿using Prism.Events;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using WpfMVVMTesting.DataAccess;
 using WpfMVVMTesting.Models;
 using WpfMVVMTesting.UI.DataProvider;
+using WpfMVVMTesting.UI.Events;
 using WpfMVVMTesting.UI.ViewModelInterface;
 
 namespace WpfMVVMTesting.UI.ViewModel
@@ -21,6 +23,13 @@ namespace WpfMVVMTesting.UI.ViewModel
             Friends = new ObservableCollection<NavigationItemViewModel>();
             _dataProvider = dataProvider;
             _eventAggregator = eventAggregator;
+            _eventAggregator.GetEvent<FriendSavedEvent>().Subscribe(OnFriendSaved);
+        }
+
+        private void OnFriendSaved(Friend friend)
+        {
+            var navigationItem = Friends.Single(n => n.Id == friend.Id);
+            navigationItem.DisplayMember = $"{friend.FirstName} {friend.LastName}";
         }
 
         public void Load()

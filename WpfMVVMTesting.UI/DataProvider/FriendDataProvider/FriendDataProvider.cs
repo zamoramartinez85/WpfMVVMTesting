@@ -30,6 +30,7 @@ namespace WpfMVVMTesting.UI.DataProvider.FriendDataProvider
 
         public Friend SaveFriend(Friend friend)
         {
+            //Modulo 7
             throw new NotImplementedException();
         }
     }

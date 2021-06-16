@@ -8,10 +8,21 @@ using WpfMVVMTesting.UI.Events;
 
 namespace WpfMVVMTesting.UI.ViewModel
 {
-    public class NavigationItemViewModel
+    public class NavigationItemViewModel : ViewModelBase
     {
         public int Id { get; private set;  }
-        public string DisplayMember { get;  set; }            
+        private string _displayMember;
+
+        public string DisplayMember
+        {
+            get { return _displayMember; }
+            set 
+            { 
+                _displayMember = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand OpenFriendEditViewCommand { get; private set; }
 
         private readonly IEventAggregator _eventAggregator;

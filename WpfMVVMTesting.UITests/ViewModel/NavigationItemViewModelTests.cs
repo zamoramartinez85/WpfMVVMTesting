@@ -5,28 +5,50 @@ using System.Collections.Generic;
 using System.Text;
 using WpfMVVMTesting.UI.Events;
 using WpfMVVMTesting.UI.ViewModel;
+using WpfMVVMTesting.UITests.Extensions;
 using Xunit;
 
 namespace WpfMVVMTesting.UITests.ViewModel
 {
     public class NavigationItemViewModelTests
     {
-        [Theory]
-        [InlineData(7, "David")]
-        [InlineData(7, "Francisco")]
-        public void ShouldPublishOpenFriendEditViewEvent(int friendId, string displayMember)
-        {            
+        private NavigationItemViewModel _navigationItemViewModel;
+        private Mock<OpenFriendEditViewEvent> _eventMock;
+        private Mock<IEventAggregator> _eventAggregatorMock;
 
-            Mock<OpenFriendEditViewEvent> eventMock = new Mock<OpenFriendEditViewEvent>();
-            Mock<IEventAggregator> eventAggregatorMock = new Mock<IEventAggregator>();
+        private const int _friendId = 6;
 
-            eventAggregatorMock.Setup(ea => ea.GetEvent<OpenFriendEditViewEvent>()).Returns(eventMock.Object);
+        public NavigationItemViewModelTests()
+        {
+            _eventMock = new Mock<OpenFriendEditViewEvent>();
+         
+            _eventAggregatorMock = new Mock<IEventAggregator>();
+            _eventAggregatorMock.Setup(ea => ea.GetEvent<OpenFriendEditViewEvent>()).Returns(_eventMock.Object);
 
-            NavigationItemViewModel viewModel = new NavigationItemViewModel(friendId, displayMember, eventAggregatorMock.Object);
+            _navigationItemViewModel = new NavigationItemViewModel(_friendId, "David", _eventAggregatorMock.Object);
+        }
 
-            viewModel.OpenFriendEditViewCommand.Execute(null);
+        [Fact]
+        public void ShouldPublishOpenFriendEditViewEvent()
+        {
+            //Act
+            _navigationItemViewModel.OpenFriendEditViewCommand.Execute(null);
 
-            eventMock.Verify(e => e.Publish(friendId), Times.Once);
+            //Assert
+            _eventMock.Verify(e => e.Publish(_friendId), Times.Once);
+        }
+
+        [Fact]
+        public void ShouldRaisePropertyChangedEventForDisplayMember()
+        {
+            //Act
+            bool fired = _navigationItemViewModel.IsPropertyChangedFired(() =>
+            {
+                _navigationItemViewModel.DisplayMember = "Lucas";
+            }, nameof(_navigationItemViewModel.DisplayMember));
+
+            //Assert
+            Assert.True(fired);
         }
     }
 }
