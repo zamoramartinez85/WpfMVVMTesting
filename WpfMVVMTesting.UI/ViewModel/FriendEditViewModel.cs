@@ -24,7 +24,9 @@ namespace WpfMVVMTesting.UI.ViewModel
 
         public ICommand SaveCommand { get; private set; }
 
-        public FriendWrapper Friend
+        public ICommand DeleteCommand { get; private set; }
+
+    public FriendWrapper Friend
         {
             private set
             {
@@ -44,24 +46,32 @@ namespace WpfMVVMTesting.UI.ViewModel
             _friendDataProvider = friendDataProvider;
             _eventAggregator = eventAggregator;
             SaveCommand = new DelegateCommand<object>(OnSaveExecute, OnSaveCanExecute);
+            DeleteCommand = new DelegateCommand<object>(OnDeleteExecute, OnDeleteCanExecute);
         }
+        
         #endregion
 
         #region Métodos públicos
-        public void Load(int friendId)
+        public void Load(int? friendId)
         {
-            Friend friend = _friendDataProvider.GetFriendById(friendId);
+            Friend friend = friendId.HasValue ? _friendDataProvider.GetFriendById(friendId.Value) : new Models.Friend();
 
             Friend = new FriendWrapper(friend);
 
             Friend.PropertyChanged += Friend_PropertyChanged;
 
-            ((DelegateCommand<object>)SaveCommand).RaiseCanExecuteChanged();
+            InvalidateCommands();
         }
 
         private void Friend_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            InvalidateCommands();
+        }
+
+        private void InvalidateCommands()
+        {
             ((DelegateCommand<object>)SaveCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand<object>)DeleteCommand).RaiseCanExecuteChanged();
         }
 
         #endregion
@@ -77,6 +87,17 @@ namespace WpfMVVMTesting.UI.ViewModel
         private bool OnSaveCanExecute(object arg)
         {
             return Friend != null && Friend.IsChanged;
+        }
+
+        private bool OnDeleteCanExecute(object arg)
+        {
+            return Friend != null && Friend.Id > 0;
+        }
+
+        private void OnDeleteExecute(object obj)
+        {
+            _friendDataProvider.DeleteFriend(Friend.Id);
+            _eventAggregator.GetEvent<FriendDeletedEvent>().Publish(Friend.Id);
         }
         #endregion
 

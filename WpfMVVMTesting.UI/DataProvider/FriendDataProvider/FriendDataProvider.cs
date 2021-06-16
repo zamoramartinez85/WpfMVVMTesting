@@ -17,7 +17,11 @@ namespace WpfMVVMTesting.UI.DataProvider.FriendDataProvider
 
         public bool DeleteFriend(int friendId)
         {
-            throw new NotImplementedException();
+            using (var dataService = _dataServiceCreator())
+            {
+                dataService.DeleteFriend(friendId);
+                return true;
+            }
         }
 
         public Friend GetFriendById(int friendId)
@@ -30,8 +34,11 @@ namespace WpfMVVMTesting.UI.DataProvider.FriendDataProvider
 
         public Friend SaveFriend(Friend friend)
         {
-            //Modulo 7
-            throw new NotImplementedException();
+            using (var dataService = _dataServiceCreator())
+            {
+                dataService.SaveFriend(friend);
+                return friend;
+            }
         }
     }
 }

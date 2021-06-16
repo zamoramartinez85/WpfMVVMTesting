@@ -24,12 +24,27 @@ namespace WpfMVVMTesting.UI.ViewModel
             _dataProvider = dataProvider;
             _eventAggregator = eventAggregator;
             _eventAggregator.GetEvent<FriendSavedEvent>().Subscribe(OnFriendSaved);
+            _eventAggregator.GetEvent<FriendDeletedEvent>().Subscribe(OnFriendDeleted);
+        }
+
+        private void OnFriendDeleted(int friendId)
+        {
+            NavigationItemViewModel navigationItem = Friends.Single(x => x.Id == friendId);
+            Friends.Remove(navigationItem);
         }
 
         private void OnFriendSaved(Friend friend)
         {
-            var navigationItem = Friends.Single(n => n.Id == friend.Id);
-            navigationItem.DisplayMember = $"{friend.FirstName} {friend.LastName}";
+            NavigationItemViewModel navigationItem = Friends.SingleOrDefault(n => n.Id == friend.Id);
+            string displayMember = $"{friend.FirstName} {friend.LastName}";
+
+            if (navigationItem != null)            
+                navigationItem.DisplayMember = displayMember;            
+            else
+            {
+                navigationItem = new NavigationItemViewModel(friend.Id, displayMember, _eventAggregator);
+                Friends.Add(navigationItem);
+            }      
         }
 
         public void Load()
